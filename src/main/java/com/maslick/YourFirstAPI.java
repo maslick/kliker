@@ -3,13 +3,15 @@ package com.maslick;
 import com.google.api.server.spi.config.Api;
 import com.google.api.server.spi.config.ApiMethod;
 import com.google.api.server.spi.config.ApiMethod.HttpMethod;
+import com.google.api.server.spi.config.Named;
+import com.google.api.server.spi.config.Nullable;
 import com.maslick.model.Campaign;
-import com.maslick.model.Mobile;
+import com.maslick.model.Counter;
+import com.maslick.model.PlatformType;
+import lombok.AllArgsConstructor;
+import lombok.Data;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 
 /**
@@ -23,21 +25,59 @@ import java.util.List;
         description = "linky API"
 )
 public class YourFirstAPI {
-    private List<Campaign> camps;
+    private List<Campaign> camps = new ArrayList<>();
 
-    @ApiMethod(
-            path = "helloworld",
-            httpMethod = ApiMethod.HttpMethod.GET
-    )
-    @SuppressWarnings("unused")
-    public Campaign helloworld() {
-        Campaign camp = new Campaign();
-        camp.setId(1);
-        camp.setPlatform(new ArrayList<>(Arrays.asList(Mobile.android, Mobile.iphone)));
-        camp.setRedirect_url("google.com");
-        camp.setCreated(new Date());
+    public YourFirstAPI() {
+        Campaign camp1 = new Campaign();
+        camp1.setId(1);
+        camp1.setPlatform(new ArrayList<>(Arrays.asList(PlatformType.android, PlatformType.iphone)));
+        camp1.setRedirect_url("google.com");
+        camp1.setCreated(new Date());
+        camp1.setUpdated(new Date());
 
-        return camp;
+        Campaign camp2 = new Campaign();
+        camp2.setId(2);
+        camp2.setPlatform(new ArrayList<>(Arrays.asList(PlatformType.android, PlatformType.iphone)));
+        camp2.setRedirect_url("yandex.ru");
+        camp2.setCreated(new Date());
+        camp2.setUpdated(new Date());
+
+        camps.add(camp1);
+        camps.add(camp2);
     }
+
+
+    @Data
+    @AllArgsConstructor
+    public class Message {
+        private String status;
+        private String message;
+    }
+
+    @ApiMethod(name = "getAllCampaigns", path = "campaign/getAll", httpMethod = HttpMethod.GET)
+    @SuppressWarnings("unused")
+    public List<Campaign> getAllCampaigns() {
+        return camps;
+    }
+
+    @ApiMethod(name = "addCampaign", path = "campaign/add", httpMethod = HttpMethod.POST)
+    @SuppressWarnings("unused")
+    public Message addCampaign(Campaign camp) {
+        camp.setCreated(new Date());
+        camp.setUpdated(new Date());
+        camps.add(camp);
+        return new Message("OK", "Campaign added");
+    }
+
+    @ApiMethod(name = "redirect", path = "redirect", httpMethod = HttpMethod.GET)
+    @SuppressWarnings("unused")
+    public Message redirect(@Named("platform") @Nullable String platform, @Named("id") @Nullable Integer id) {
+        if (platform == null || id == null) {
+            return new Message("Error", "id or platform missing");
+        }
+
+        return new Message("OK", "platformType: " + platform + ", id: " + id);
+    }
+
 
 }
