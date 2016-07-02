@@ -13,8 +13,8 @@ public class OfyService {
 
     // This static block ensure the entity registration.
     static {
-        factory().register(Campaign.class);
         factory().register(Counter.class);
+        factory().register(Campaign.class);
     }
 
     // Use this static method for getting the Objectify service factory.

@@ -66,9 +66,9 @@ public class YourFirstAPI {
     @ApiMethod(name = "getAllCampaigns", path = "campaign/getAll", httpMethod = HttpMethod.GET)
     @SuppressWarnings("unused")
     public List<Campaign> getAllCampaigns(HttpServletRequest req) {
-        if(!isAuthenticated(req)) {
-            return null;
-        }
+//        if(!isAuthenticated(req)) {
+//            return null;
+//        }
 
         Objectify ofy = OfyService.ofy();
         List<Campaign> result = ofy.load().type(Campaign.class).list();
@@ -76,7 +76,6 @@ public class YourFirstAPI {
     }
 
     @ApiMethod(name = "addCampaign", path = "campaign/add", httpMethod = HttpMethod.POST)
-    @SuppressWarnings("unused")
     public Message addCampaign(Campaign camp) {
         Objectify ofy = OfyService.ofy();
         Campaign newCamp = new Campaign();
@@ -118,11 +117,28 @@ public class YourFirstAPI {
         return list;
     }
 
+    @ApiMethod(name = "counterOnPlatform", path="counter/platform", httpMethod = HttpMethod.GET)
+    public Message getCounterOnPlatform(@Named("platform") @Nullable String platform) {
+        Objectify ofy = OfyService.ofy();
+        List<Counter> list = ofy.load().type(Counter.class).filter("platform", platform).list();
+        Integer count = list.size();
+        return new Message("OK", "Count: " + count);
+    }
+
+    @ApiMethod(name = "counterOnPlatformAndCampaign", path="counter", httpMethod = HttpMethod.GET)
+    public Message getCounter(@Named("platform") @Nullable String platform,
+                              @Named("campaign") @Nullable String id) {
+        Objectify ofy = OfyService.ofy();
+        List<Counter> list = ofy.load().type(Counter.class).filter("campaign", Long.parseLong(id)).filter("platform", platform).list();
+        Integer count = list.size();
+        return new Message("OK", "Count: " + count);
+    }
+
     @ApiMethod(name = "redirect", path = "redirect", httpMethod = HttpMethod.GET)
     @SuppressWarnings("unused")
     public Message redirect(HttpServletRequest req,
                             @Named("platform") @Nullable String platform,
-                            @Named("id") @Nullable String id) {
+                            @Named("campaign") @Nullable String id) {
 
         if (platform == null || id == null) {
             return new Message("Error", "id or platform missing");
