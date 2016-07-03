@@ -50,7 +50,7 @@ public class RedirectServlet extends HttpServlet {
         ofy.save().entity(counter).now();
         out.println("platform: " + platform + ", campaign: " + campaign + ". Redirecting to: " + camp.getRedirect_url());
 
-        //resp.sendRedirect(camp.getRedirect_url());
+        resp.sendRedirect(camp.getRedirect_url());
 
     }
 }

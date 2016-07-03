@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <appengine-web-app xmlns="http://appengine.google.com/ns/1.0">
-    <application>gcp-java</application>
-    <version>1</version>
+    <application>outfit7-1359</application>
+    <version>0.1</version>
     <threadsafe>true</threadsafe>
     <public-root>/frontend</public-root>
 

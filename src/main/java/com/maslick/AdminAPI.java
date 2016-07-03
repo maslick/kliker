@@ -85,6 +85,21 @@ public class AdminAPI {
         return new Message("OK", "Campaign updated");
     }
 
+    @ApiMethod(name = "deleteCampaign", path = "campaign/delete", httpMethod = HttpMethod.GET)
+    @SuppressWarnings("unused")
+    public Message deleteCampaign(@Named("campaign") String id) {
+        Objectify ofy = OfyService.ofy();
+
+        Campaign camp = findCampaignById(Long.parseLong(id));
+        if (camp == null) {
+            return new Message("Error", "Campaign not find");
+        }
+
+        ofy.delete().entity(camp).now();
+
+        return new Message("OK", "Campaign deleted");
+    }
+
     @ApiMethod(name = "findCampaignByPlatform", path = "campaign/findByPlatform", httpMethod = HttpMethod.GET)
     public List<Campaign> findCampaignByPlatform(@Named("platform") @Nullable String platform) {
         Objectify ofy = OfyService.ofy();
@@ -98,7 +113,7 @@ public class AdminAPI {
         Objectify ofy = OfyService.ofy();
         List<Counter> list = ofy.load().type(Counter.class).filter("platform", platform).list();
         Integer count = list.size();
-        return new Message("OK", "Count: " + count);
+        return new Message("OK", count.toString());
     }
 
     @ApiMethod(name = "counterOnPlatformAndCampaign", path="counter", httpMethod = HttpMethod.GET)
@@ -107,7 +122,7 @@ public class AdminAPI {
         Objectify ofy = OfyService.ofy();
         List<Counter> list = ofy.load().type(Counter.class).filter("campaign", Long.parseLong(id)).filter("platform", platform).list();
         Integer count = list.size();
-        return new Message("OK", "Count: " + count);
+        return new Message("OK", count.toString());
     }
 
     private Campaign findCampaignById(Long id) {
