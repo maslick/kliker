@@ -3,6 +3,7 @@
     <application>gcp-java</application>
     <version>1</version>
     <threadsafe>true</threadsafe>
+    <public-root>/frontend</public-root>
 
     <system-properties>
         <property name="java.util.logging.config.file" value="WEB-INF/logging.properties"/>
