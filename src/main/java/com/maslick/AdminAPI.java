@@ -5,10 +5,10 @@ import com.google.api.server.spi.config.ApiMethod;
 import com.google.api.server.spi.config.ApiMethod.HttpMethod;
 import com.google.api.server.spi.config.Named;
 import com.google.api.server.spi.config.Nullable;
+import com.google.api.server.spi.response.UnauthorizedException;
 import com.googlecode.objectify.Objectify;
 import com.maslick.model.Campaign;
 import com.maslick.model.Counter;
-import com.maslick.model.PlatformType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
@@ -30,31 +30,8 @@ import java.util.logging.Logger;
         version = "v1",
         description = "linky API"
 )
-public class YourFirstAPI {
-    private List<Campaign> camps = new ArrayList<>();
-    private static final Logger LOG = Logger.getLogger(YourFirstAPI.class.getName());
-    private HashMap<String, Long> countCampaign = new HashMap<>();
-    private HashMap<String, Long> countPlatform = new HashMap<>();
-
-
-    public YourFirstAPI() {
-        Campaign camp1 = new Campaign();
-        camp1.setPlatform(new ArrayList<>(Arrays.asList(PlatformType.android, PlatformType.iphone)));
-        camp1.setRedirect_url("google.com");
-        camp1.setCreated(new Date());
-        camp1.setUpdated(new Date());
-
-        Campaign camp2 = new Campaign();
-        camp2.setPlatform(new ArrayList<>(Arrays.asList(PlatformType.android, PlatformType.iphone)));
-        camp2.setRedirect_url("yandex.ru");
-        camp2.setCreated(new Date());
-        camp2.setUpdated(new Date());
-
-        Objectify ofy = OfyService.ofy();
-        ofy.save().entity(camp1).now();
-        ofy.save().entity(camp2).now();
-    }
-
+public class AdminAPI {
+    private static final Logger LOG = Logger.getLogger(AdminAPI.class.getName());
 
     @Data
     @AllArgsConstructor
@@ -64,11 +41,11 @@ public class YourFirstAPI {
     }
 
     @ApiMethod(name = "getAllCampaigns", path = "campaign/getAll", httpMethod = HttpMethod.GET)
-    @SuppressWarnings("unused")
-    public List<Campaign> getAllCampaigns(HttpServletRequest req) {
-//        if(!isAuthenticated(req)) {
-//            return null;
-//        }
+     @SuppressWarnings("unused")
+     public List<Campaign> getAllCampaigns(HttpServletRequest req) throws UnauthorizedException {
+        /*if(!isAuthenticated(req)) {
+            throw new UnauthorizedException("Unauthorized");
+        }*/
 
         Objectify ofy = OfyService.ofy();
         List<Campaign> result = ofy.load().type(Campaign.class).list();
@@ -108,7 +85,6 @@ public class YourFirstAPI {
         return new Message("OK", "Campaign updated");
     }
 
-
     @ApiMethod(name = "findCampaignByPlatform", path = "campaign/findByPlatform", httpMethod = HttpMethod.GET)
     public List<Campaign> findCampaignByPlatform(@Named("platform") @Nullable String platform) {
         Objectify ofy = OfyService.ofy();
@@ -134,39 +110,6 @@ public class YourFirstAPI {
         return new Message("OK", "Count: " + count);
     }
 
-    @ApiMethod(name = "redirect", path = "redirect", httpMethod = HttpMethod.GET)
-    @SuppressWarnings("unused")
-    public Message redirect(HttpServletRequest req,
-                            @Named("platform") @Nullable String platform,
-                            @Named("campaign") @Nullable String id) {
-
-        if (platform == null || id == null) {
-            return new Message("Error", "id or platform missing");
-        }
-
-        Campaign camp = findCampaignById(Long.parseLong(id));
-        if (camp == null) {
-            return new Message("Error", "Campaign not find");
-        }
-
-        Counter counter = new Counter();
-
-        if (!camp.getPlatform().contains(platform)) {
-            return new Message("Error", "This link doesn't work on your device");
-        }
-
-        counter.setCampaign(camp.getId());
-        counter.setPlatform(platform);
-        counter.setTimeOfClick(new Date());
-        counter.setIpaddr(req.getRemoteAddr());
-
-
-        Objectify ofy = OfyService.ofy();
-        ofy.save().entity(counter).now();
-
-        return new Message("OK", "platformType: " + platform + ", id: " + id + ". Redirecting to: " + camp.getRedirect_url());
-    }
-
     private Campaign findCampaignById(Long id) {
         Objectify ofy = OfyService.ofy();
         return ofy.load().type(Campaign.class).id(id).now();
@@ -187,5 +130,4 @@ public class YourFirstAPI {
         }
         return false;
     }
-
 }
