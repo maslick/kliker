@@ -46,9 +46,9 @@ public class AdminAPI {
     @ApiMethod(name = "getAllCampaigns", path = "campaign/getAll", httpMethod = HttpMethod.GET)
      @SuppressWarnings("unused")
      public List<Campaign> getAllCampaigns(HttpServletRequest req) throws UnauthorizedException {
-        /*if(!isAuthenticated(req)) {
+        if(!isAuthenticated(req)) {
             throw new UnauthorizedException("Unauthorized");
-        }*/
+        }
 
         Objectify ofy = OfyService.ofy();
         List<Campaign> result = ofy.load().type(Campaign.class).list();
@@ -56,10 +56,10 @@ public class AdminAPI {
     }
 
     @ApiMethod(name = "addCampaign", path = "campaign/add", httpMethod = HttpMethod.POST)
-    public Message addCampaign(HttpServletRequest req, Campaign camp) {
-        /*if(!isAuthenticated(req)) {
+    public Message addCampaign(HttpServletRequest req, Campaign camp) throws UnauthorizedException {
+        if(!isAuthenticated(req)) {
             throw new UnauthorizedException("Unauthorized");
-        }*/
+        }
 
         Objectify ofy = OfyService.ofy();
         Campaign newCamp = new Campaign();
@@ -75,10 +75,10 @@ public class AdminAPI {
 
     @ApiMethod(name = "editCampaign", path = "campaign/edit", httpMethod = HttpMethod.POST)
     @SuppressWarnings("unused")
-    public Message editCampaign(HttpServletRequest req, Campaign camp) {
-        /*if(!isAuthenticated(req)) {
+    public Message editCampaign(HttpServletRequest req, Campaign camp) throws UnauthorizedException {
+        if(!isAuthenticated(req)) {
             throw new UnauthorizedException("Unauthorized");
-        }*/
+        }
 
         Objectify ofy = OfyService.ofy();
 
@@ -99,10 +99,10 @@ public class AdminAPI {
     @ApiMethod(name = "deleteCampaign", path = "campaign/delete", httpMethod = HttpMethod.GET)
     @SuppressWarnings("unused")
     public Message deleteCampaign(HttpServletRequest req,
-                                  @Named("campaign") String id) {
-        /*if(!isAuthenticated(req)) {
+                                  @Named("campaign") String id) throws UnauthorizedException {
+        if(!isAuthenticated(req)) {
             throw new UnauthorizedException("Unauthorized");
-        }*/
+        }
 
         Objectify ofy = OfyService.ofy();
 
@@ -118,10 +118,10 @@ public class AdminAPI {
 
     @ApiMethod(name = "findCampaignByPlatform", path = "campaign/findByPlatform", httpMethod = HttpMethod.GET)
     public List<Campaign> findCampaignByPlatform(HttpServletRequest req,
-                                                 @Named("platform") @Nullable String platform) {
-        /*if(!isAuthenticated(req)) {
+                                                 @Named("platform") @Nullable String platform) throws UnauthorizedException {
+        if(!isAuthenticated(req)) {
             throw new UnauthorizedException("Unauthorized");
-        }*/
+        }
 
         Objectify ofy = OfyService.ofy();
         List<String> plat;
@@ -131,10 +131,10 @@ public class AdminAPI {
 
     @ApiMethod(name = "counterOnPlatform", path="counter/platform", httpMethod = HttpMethod.GET)
     public Message getCounterOnPlatform(HttpServletRequest req,
-                                        @Named("platform") @Nullable String platform) {
-        /*if(!isAuthenticated(req)) {
+                                        @Named("platform") @Nullable String platform) throws UnauthorizedException {
+        if(!isAuthenticated(req)) {
             throw new UnauthorizedException("Unauthorized");
-        }*/
+        }
 
         Objectify ofy = OfyService.ofy();
         List<Counter> list = ofy.load().type(Counter.class).filter("platform", platform).list();
@@ -145,10 +145,10 @@ public class AdminAPI {
     @ApiMethod(name = "counterOnPlatformAndCampaign", path="counter", httpMethod = HttpMethod.GET)
     public Message getCounter(HttpServletRequest req,
                               @Named("platform") @Nullable String platform,
-                              @Named("campaign") @Nullable String id) {
-        /*if(!isAuthenticated(req)) {
+                              @Named("campaign") @Nullable String id) throws UnauthorizedException {
+        if(!isAuthenticated(req)) {
             throw new UnauthorizedException("Unauthorized");
-        }*/
+        }
 
         Objectify ofy = OfyService.ofy();
         List<Counter> list = ofy.load().type(Counter.class).filter("campaign", Long.parseLong(id)).filter("platform", platform).list();
