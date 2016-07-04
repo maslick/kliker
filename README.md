@@ -1,6 +1,6 @@
 *kliKer*
 ------------------------------------
-[Live demo](https://klikerpiker.appspot.com)
+[Live demo](https://klikerpiker.appspot.com) (username: admin, password: admin12345, backend url: leave blank or use https://klikerpiker.appspot.com)
 
 
 Admin API:
