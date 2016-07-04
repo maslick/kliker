@@ -6,7 +6,7 @@
     <version>0-1</version>
 
     <groupId>com.maslick</groupId>
-    <artifactId>clicker</artifactId>
+    <artifactId>kliker</artifactId>
 
     <properties>
         <app.id>gcp-java</app.id>

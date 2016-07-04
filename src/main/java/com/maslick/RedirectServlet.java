@@ -18,6 +18,8 @@ import java.util.Date;
 @SuppressWarnings("serial")
 @WebServlet
 public class RedirectServlet extends HttpServlet {
+    private static final String fallbackUrl = "http://outfit7.com";
+
     @Override
     public void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         String platform = req.getParameter("platform");
@@ -25,7 +27,8 @@ public class RedirectServlet extends HttpServlet {
 
         PrintWriter out = resp.getWriter();
         if (platform == null || campaign == null) {
-            out.println("Id or platform missing");
+            //out.println("Id or platform missing");
+            resp.sendRedirect(fallbackUrl);
             return;
         }
 
@@ -33,12 +36,14 @@ public class RedirectServlet extends HttpServlet {
         Campaign camp = ofy.load().type(Campaign.class).id(Long.parseLong(campaign)).now();
 
         if (camp == null) {
-            out.println("Campaign " + campaign + " not found");
+            //out.println("Campaign " + campaign + " not found");
+            resp.sendRedirect(fallbackUrl);
             return;
         }
 
         if (!camp.getPlatform().contains(platform)) {
-            out.println("This link doesn't work on your device");
+            //out.println("This link doesn't work on your device");
+            resp.sendRedirect(fallbackUrl);
             return;
         }
 
