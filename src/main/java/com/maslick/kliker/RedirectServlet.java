@@ -1,8 +1,8 @@
-package com.maslick;
+package com.maslick.kliker;
 
 import com.googlecode.objectify.Objectify;
-import com.maslick.model.Campaign;
-import com.maslick.model.Counter;
+import com.maslick.kliker.model.Campaign;
+import com.maslick.kliker.model.Counter;
 
 import javax.servlet.http.HttpServlet;
 import javax.servlet.annotation.WebServlet;

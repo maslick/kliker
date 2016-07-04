@@ -1,10 +1,10 @@
-package com.maslick;
+package com.maslick.kliker;
 
 import com.googlecode.objectify.Objectify;
 import com.googlecode.objectify.ObjectifyFactory;
 import com.googlecode.objectify.ObjectifyService;
-import com.maslick.model.Campaign;
-import com.maslick.model.Counter;
+import com.maslick.kliker.model.Campaign;
+import com.maslick.kliker.model.Counter;
 
 /**
  * Custom Objectify Service that this application should use.

@@ -11,13 +11,13 @@
         <servlet-class>com.google.api.server.spi.SystemServiceServlet</servlet-class>
         <init-param>
             <param-name>services</param-name>
-            <param-value>com.maslick.AdminAPI</param-value>
+            <param-value>com.maslick.kliker.AdminAPI</param-value>
         </init-param>
     </servlet>
 
     <servlet>
         <servlet-name>RedirectServlet</servlet-name>
-        <servlet-class>com.maslick.RedirectServlet</servlet-class>
+        <servlet-class>com.maslick.kliker.RedirectServlet</servlet-class>
     </servlet>
 
     <servlet-mapping>

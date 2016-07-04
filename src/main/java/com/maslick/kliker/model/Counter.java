@@ -1,4 +1,4 @@
-package com.maslick.model;
+package com.maslick.kliker.model;
 
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
@@ -8,7 +8,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.Date;
-import java.util.List;
 
 /**
  * Created by maslick on 02/07/16.
@@ -17,13 +16,13 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-public class Campaign {
+public class Counter {
     @Id
     private Long id;
-    private String redirect_url;
-
     @Index
-    private List<String> platform;
-    private Date created;
-    private Date updated;
+    private Long campaign;
+    @Index
+    private String platform;
+    private Date timeOfClick;
+    private String ipaddr;
 }

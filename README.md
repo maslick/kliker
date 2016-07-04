@@ -37,7 +37,7 @@ $ mvn appengine:devserver
 **Deploy to GAE**
 * Edit src/main/webapp/appengine-web.xml and set app name 
 ```
-<application>kliker</application>
+<application>klikerpiker</application>
 ```
 
 * Edit set.account.sh and set your GAE account and project name and then run: 
